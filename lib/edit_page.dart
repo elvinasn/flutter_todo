@@ -79,7 +79,7 @@ class _nameState extends ConsumerState<EditTaskPage> {
     return InputDatePickerFormField(
       firstDate: DateTime(now.year, now.month, now.day),
       lastDate: DateTime(2030),
-      initialDate: date,
+      initialDate: date.isAfter(now) ? date : now,
       fieldLabelText: "Task's Due Date",
       onDateSaved: (value) {
         _dueDate = value;
@@ -98,48 +98,49 @@ class _nameState extends ConsumerState<EditTaskPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-            margin: const EdgeInsets.all(20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildTask(todo.task),
-                  _buildDescription(todo.description),
-                  _buildTaskPriority(todo.priority),
-                  _buildDueDate(todo.dueDate),
-                  const SizedBox(height: 50),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        // todo priskyrus nauja objekta, liste jis nepasikeicia
+          margin: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildTask(todo.task),
+                _buildDescription(todo.description),
+                _buildTaskPriority(todo.priority),
+                _buildDueDate(todo.dueDate),
+                const SizedBox(height: 50),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      // todo priskyrus nauja objekta, liste jis nepasikeicia
 
-                        todo.task = _task;
-                        todo.description = _description;
-                        todo.priority = _priority;
-                        todo.dueDate = _dueDate;
+                      todo.task = _task;
+                      todo.description = _description;
+                      todo.priority = _priority;
+                      todo.dueDate = _dueDate;
 
-                        ref.read(todosProvider.notifier).setActive();
+                      ref.read(todosProvider.notifier).setActive();
 
-                        //nezinau kuris atvejis geresnis
+                      //nezinau kuris atvejis geresnis
 
-                        // ref.read(TodosProvider.notifier).removeTodo(todo);
-                        // todo = Todo(
-                        //     task: _task,
-                        //     isDone: todo.isDone,
-                        //     description: _description,
-                        //     priority: _priority,
-                        //     dueDate: _dueDate);
-                        // ref.read(TodosProvider.notifier).addTodo(todo);
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: const Text('Edit'),
-                  ),
-                ],
-              ),
-            )),
+                      // ref.read(TodosProvider.notifier).removeTodo(todo);
+                      // todo = Todo(
+                      //     task: _task,
+                      //     isDone: todo.isDone,
+                      //     description: _description,
+                      //     priority: _priority,
+                      //     dueDate: _dueDate);
+                      // ref.read(TodosProvider.notifier).addTodo(todo);
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: const Text('Edit'),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

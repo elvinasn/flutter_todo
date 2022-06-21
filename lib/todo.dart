@@ -35,7 +35,8 @@ class Todo {
     }
   }
 
-  String getFormattedDate() {
-    return DateFormat("yyyy-MM-dd").format(dueDate);
-  }
+  String getFormattedDate() => DateFormat("yyyy-MM-dd").format(dueDate);
+
+  bool isPast() =>
+      !dueDate.add(const Duration(days: 1)).isAfter(DateTime.now());
 }

@@ -62,11 +62,8 @@ class _nameState extends ConsumerState<MainPage> {
                             !todo.isDone || !ref.watch(hideTasksProvider))
                         .map(
                       (todo) {
-                        Color bgc = todo.dueDate
-                                    .add(const Duration(days: 1))
-                                    .compareTo(DateTime.now()) <
-                                0
-                            ? const Color.fromARGB(255, 230, 108, 100)
+                        Color bgc = todo.isPast() && !todo.isDone
+                            ? Color.fromARGB(255, 236, 134, 127)
                             : const Color.fromARGB(255, 190, 187, 187);
                         return GestureDetector(
                           onTap: () {
